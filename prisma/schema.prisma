@@ -42,13 +42,17 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String       @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?      @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
+    tweet         Tweet[]
+    tweetLike     TweetLike[]
+    following     UserFollow[] @relation("UserFollowing")
+    followers     UserFollow[] @relation("UserFollowers")
 }
 
 model VerificationToken {
@@ -59,8 +63,32 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-model Tweet {}
+model Tweet {
+    id        String      @id @default(uuid())
+    from      User        @relation(fields: [userId], references: [id])
+    userId    String
+    content   String
+    likes     TweetLike[]
+    createdAt DateTime    @default(now())
+    updatedAt DateTime    @default(now()) @updatedAt
+}
 
-model TweetLike {}
+model TweetLike {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+    Tweet     Tweet    @relation(fields: [tweetId], references: [id])
+    tweetId   String
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String
+}
 
-model UserFollow {}
+model UserFollow {
+    id        String   @id @default(uuid())
+    user      User     @relation("UserFollowing", fields: [userId], references: [id])
+    userId    String
+    target    User     @relation("UserFollowers", fields: [targetId], references: [id])
+    targetId  String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+}
