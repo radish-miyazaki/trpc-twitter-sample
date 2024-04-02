@@ -1,5 +1,6 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { type GetServerSidePropsContext } from "next";
+import EmailProvider from "next-auth/providers/email";
 import {
   getServerSession,
   type DefaultSession,
@@ -46,7 +47,12 @@ export const authOptions: NextAuthOptions = {
     }),
   },
   adapter: PrismaAdapter(db) as Adapter,
-  providers: [],
+  providers: [
+    EmailProvider({
+      server: process.env.EMAIL_SERVER,
+      from: process.env.EMAIL_FROM,
+    })
+  ],
 };
 
 /**
