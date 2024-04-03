@@ -11,6 +11,7 @@ import { api } from "~/utils/api";
 import { DefaultLayout } from "~/components/DefaultLayout";
 import Error from "next/error";
 import { UserIcon } from "~/components/UserIcon";
+import { TweetList } from "~/components/TweetList";
 
 export default function UserIdIndex() {
   const router = useRouter();
@@ -26,15 +27,24 @@ export default function UserIdIndex() {
   });
 
   const userId = String(router.query.userId);
-  const { data: user, isLoading } = api.user.getByUserId.useQuery(
-    { userId },
-    {
-      enabled: router.isReady,
-    },
-  );
+  const { data: user, isLoading: isLoadingUser } =
+    api.user.getByUserId.useQuery(
+      { userId },
+      {
+        enabled: router.isReady,
+      },
+    );
+  const { data: tweets = [], isLoading: isLoadingTweet } =
+    api.tweet.getAllByUserId.useQuery(
+      { userId },
+      {
+        enabled: router.isReady,
+      },
+    );
+  const utils = api.useUtils();
   const tweetAddMutation = api.tweet.add.useMutation();
 
-  if (isLoading) {
+  if (isLoadingUser) {
     return (
       <DefaultLayout session={session}>
         <div>Loading...</div>
@@ -49,7 +59,17 @@ export default function UserIdIndex() {
   function onSubmit({ content }: TweetContentSchema) {
     if (tweetAddMutation.isPending) return;
 
-    tweetAddMutation.mutate({ content });
+    tweetAddMutation.mutate(
+      { content },
+      {
+        onSuccess(data) {
+          utils.tweet.getAllByUserId.setData({ userId: data.userId }, [
+            data,
+            ...tweets,
+          ]);
+        },
+      },
+    );
     reset();
   }
 
@@ -88,6 +108,10 @@ export default function UserIdIndex() {
             </button>
           </form>
         )}
+      </div>
+      <div>
+        <h2 className="mb-2 font-bold">ツイート</h2>
+        <TweetList tweets={tweets} isLoading={isLoadingTweet} />
       </div>
     </DefaultLayout>
   );

@@ -1,5 +1,6 @@
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { tweetContentSchema } from "~/validations/tweet";
+import { z } from "zod";
 
 export const tweetRouter = createTRPCRouter({
   add: protectedProcedure
@@ -8,7 +9,7 @@ export const tweetRouter = createTRPCRouter({
       const { content } = input;
       const { user } = ctx.session;
 
-      const tweet = await ctx.db.tweet.create({
+      return await ctx.db.tweet.create({
         data: {
           content,
           userId: user.id,
@@ -24,7 +25,61 @@ export const tweetRouter = createTRPCRouter({
           likes: true,
         },
       });
+    }),
+  getAllByUserId: publicProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.db.tweet.findMany({
+        where: {
+          userId: input.userId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          from: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
+          likes: true,
+        },
+      });
+    }),
+  getAll: publicProcedure
+    .input(z.object({ cursor: z.string().nullish() }))
+    .query(async ({ ctx, input }) => {
+      const take = 10;
+      const { cursor } = input;
+      const tweets = await ctx.db.tweet.findMany({
+        take: take + 1,
+        orderBy: {
+          createdAt: "desc",
+        },
+        cursor: cursor ? { id: cursor } : undefined,
+        include: {
+          from: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
+          likes: true,
+        },
+      });
 
-      return tweet;
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (tweets.length > take) {
+        const nextTweet = tweets.pop();
+        nextCursor = nextTweet?.id;
+      }
+
+      return {
+        tweets,
+        nextCursor,
+      };
     }),
 });
