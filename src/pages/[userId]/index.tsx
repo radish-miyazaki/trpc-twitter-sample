@@ -8,7 +8,6 @@ import {
   type TweetContentSchema,
   tweetContentSchema,
 } from "~/validations/tweet";
-import type { RouterOutputs } from "~/utils/api";
 import { api } from "~/utils/api";
 import { DefaultLayout } from "~/components/DefaultLayout";
 import Error from "next/error";
