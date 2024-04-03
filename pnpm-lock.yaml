@@ -8,6 +8,9 @@ dependencies:
   '@auth/prisma-adapter':
     specifier: ^1.4.0
     version: 1.4.0(@prisma/client@5.10.2)(nodemailer@6.9.13)
+  '@hookform/resolvers':
+    specifier: ^3.3.4
+    version: 3.3.4(react-hook-form@7.51.2)
   '@prisma/client':
     specifier: ^5.10.2
     version: 5.10.2(prisma@5.10.2)
@@ -19,16 +22,16 @@ dependencies:
     version: 5.25.0(react@18.2.0)
   '@trpc/client':
     specifier: next
-    version: 11.0.0-next.327(@trpc/server@11.0.0-next.327)
+    version: 11.0.0-rc.330(@trpc/server@11.0.0-rc.330)
   '@trpc/next':
     specifier: next
-    version: 11.0.0-next.327(@tanstack/react-query@5.25.0)(@trpc/client@11.0.0-next.327)(@trpc/react-query@11.0.0-next.327)(@trpc/server@11.0.0-next.327)(next@14.1.3)(react-dom@18.2.0)(react@18.2.0)
+    version: 11.0.0-rc.330(@tanstack/react-query@5.25.0)(@trpc/client@11.0.0-rc.330)(@trpc/react-query@11.0.0-rc.330)(@trpc/server@11.0.0-rc.330)(next@14.1.3)(react-dom@18.2.0)(react@18.2.0)
   '@trpc/react-query':
     specifier: next
-    version: 11.0.0-next.327(@tanstack/react-query@5.25.0)(@trpc/client@11.0.0-next.327)(@trpc/server@11.0.0-next.327)(react-dom@18.2.0)(react@18.2.0)
+    version: 11.0.0-rc.330(@tanstack/react-query@5.25.0)(@trpc/client@11.0.0-rc.330)(@trpc/server@11.0.0-rc.330)(react-dom@18.2.0)(react@18.2.0)
   '@trpc/server':
     specifier: next
-    version: 11.0.0-next.327
+    version: 11.0.0-rc.330
   next:
     specifier: ^14.1.3
     version: 14.1.3(react-dom@18.2.0)(react@18.2.0)
@@ -44,6 +47,9 @@ dependencies:
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
+  react-hook-form:
+    specifier: ^7.51.2
+    version: 7.51.2(react@18.2.0)
   superjson:
     specifier: ^2.2.1
     version: 2.2.1
@@ -186,6 +192,14 @@ packages:
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
+
+  /@hookform/resolvers@3.3.4(react-hook-form@7.51.2):
+    resolution: {integrity: sha512-o5cgpGOuJYrd+iMKvkttOclgwRW86EsWJZZRC23prf0uU2i48Htq4PuT73AVb9ionFyZrwYEITuOFGF+BydEtQ==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.51.2(react@18.2.0)
+    dev: false
 
   /@humanwhocodes/config-array@0.11.14:
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -462,21 +476,21 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@trpc/client@11.0.0-next.327(@trpc/server@11.0.0-next.327):
-    resolution: {integrity: sha512-5Vhem/cavPizA0+CdGDWfJR0XSdljjf927BpKyRt6NfdQP539tP8s0wZsGq/+s9S79hucsDQkh0MoP0Ki3UO4g==}
+  /@trpc/client@11.0.0-rc.330(@trpc/server@11.0.0-rc.330):
+    resolution: {integrity: sha512-7Z0Ty5BZgWm8SgDMh2Me+WoBOqHoB938S2lK7d5bK8jMwiatGeUpAOaOJ1047rCqnLSEPXYfy8ylaTOrfaLr3Q==}
     peerDependencies:
-      '@trpc/server': 11.0.0-next.327+1c757e8d3
+      '@trpc/server': 11.0.0-rc.330+c89fb11f2
     dependencies:
-      '@trpc/server': 11.0.0-next.327
+      '@trpc/server': 11.0.0-rc.330
     dev: false
 
-  /@trpc/next@11.0.0-next.327(@tanstack/react-query@5.25.0)(@trpc/client@11.0.0-next.327)(@trpc/react-query@11.0.0-next.327)(@trpc/server@11.0.0-next.327)(next@14.1.3)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-Ks/HRhBiAu46qn2YZxq/t7sllJyO2bktoGZT2g3g28ESK7WuGznbv/hIZYq0TlbPkP/AEQMjP7w9X86E5aG5lA==}
+  /@trpc/next@11.0.0-rc.330(@tanstack/react-query@5.25.0)(@trpc/client@11.0.0-rc.330)(@trpc/react-query@11.0.0-rc.330)(@trpc/server@11.0.0-rc.330)(next@14.1.3)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-pXza0X0gGpBzt4zhq7bhMg8KFsNr5ajK3wi/0npkmt8DImZwBKf7A6Tkloxh1qB331Qu7onhEfZoR3gTGbp5Rg==}
     peerDependencies:
       '@tanstack/react-query': ^5.25.0
-      '@trpc/client': 11.0.0-next.327+1c757e8d3
-      '@trpc/react-query': 11.0.0-next.327+1c757e8d3
-      '@trpc/server': 11.0.0-next.327+1c757e8d3
+      '@trpc/client': 11.0.0-rc.330+c89fb11f2
+      '@trpc/react-query': 11.0.0-rc.330+c89fb11f2
+      '@trpc/server': 11.0.0-rc.330+c89fb11f2
       next: '*'
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -487,32 +501,32 @@ packages:
         optional: true
     dependencies:
       '@tanstack/react-query': 5.25.0(react@18.2.0)
-      '@trpc/client': 11.0.0-next.327(@trpc/server@11.0.0-next.327)
-      '@trpc/react-query': 11.0.0-next.327(@tanstack/react-query@5.25.0)(@trpc/client@11.0.0-next.327)(@trpc/server@11.0.0-next.327)(react-dom@18.2.0)(react@18.2.0)
-      '@trpc/server': 11.0.0-next.327
+      '@trpc/client': 11.0.0-rc.330(@trpc/server@11.0.0-rc.330)
+      '@trpc/react-query': 11.0.0-rc.330(@tanstack/react-query@5.25.0)(@trpc/client@11.0.0-rc.330)(@trpc/server@11.0.0-rc.330)(react-dom@18.2.0)(react@18.2.0)
+      '@trpc/server': 11.0.0-rc.330
       next: 14.1.3(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@trpc/react-query@11.0.0-next.327(@tanstack/react-query@5.25.0)(@trpc/client@11.0.0-next.327)(@trpc/server@11.0.0-next.327)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-B077KFeI2APLVTsXdIMbArb8j7ZwgIE6vlvEKiM0q2cftckgKV0WclUYboZ9Ldd/AFJ8k8Lz92Ot3CroSUg5vA==}
+  /@trpc/react-query@11.0.0-rc.330(@tanstack/react-query@5.25.0)(@trpc/client@11.0.0-rc.330)(@trpc/server@11.0.0-rc.330)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-qkAu+xxPE4dN8osBdsQNMzdEdZw6S5KnGR0WH7sCG0Rx0R0ynH0QBxlmWfhiKTXkKd1yGHIkBlN4EB2bQJ64lw==}
     peerDependencies:
       '@tanstack/react-query': ^5.25.0
-      '@trpc/client': 11.0.0-next.327+1c757e8d3
-      '@trpc/server': 11.0.0-next.327+1c757e8d3
+      '@trpc/client': 11.0.0-rc.330+c89fb11f2
+      '@trpc/server': 11.0.0-rc.330+c89fb11f2
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
     dependencies:
       '@tanstack/react-query': 5.25.0(react@18.2.0)
-      '@trpc/client': 11.0.0-next.327(@trpc/server@11.0.0-next.327)
-      '@trpc/server': 11.0.0-next.327
+      '@trpc/client': 11.0.0-rc.330(@trpc/server@11.0.0-rc.330)
+      '@trpc/server': 11.0.0-rc.330
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@trpc/server@11.0.0-next.327:
-    resolution: {integrity: sha512-Lw4knzW1z0RpiGjur5gU/d67pl1NEkpIokTefuPqb63FlWCfwfHG3FHfvOaNoQ1lt3xMlw/A+pAMeU/q8YWp4Q==}
+  /@trpc/server@11.0.0-rc.330:
+    resolution: {integrity: sha512-fGVgu+w/ZUD3OmM1VjoeaMYZ7ZZicBSP+BbiR11A7tGh66IYuLquvPqNAT5ac3hrE/mJgYq1SMBBR321Z+YTfw==}
     dev: false
 
   /@types/cookie@0.6.0:
@@ -2817,6 +2831,15 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-hook-form@7.51.2(react@18.2.0):
+    resolution: {integrity: sha512-y++lwaWjtzDt/XNnyGDQy6goHskFualmDlf+jzEZvjvz6KWDf7EboL7pUvRCzPTJd0EOPpdekYaQLEvvG6m6HA==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-is@16.13.1:
