@@ -2,11 +2,13 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { produce } from "immer";
 
 import {
   type TweetContentSchema,
   tweetContentSchema,
 } from "~/validations/tweet";
+import type { RouterOutputs } from "~/utils/api";
 import { api } from "~/utils/api";
 import { DefaultLayout } from "~/components/DefaultLayout";
 import Error from "next/error";
@@ -43,6 +45,8 @@ export default function UserIdIndex() {
     );
   const utils = api.useUtils();
   const tweetAddMutation = api.tweet.add.useMutation();
+  const tweetLikeLikeOrUnlikeMutation =
+    api.tweetLike.likeOrUnLike.useMutation();
 
   if (isLoadingUser) {
     return (
@@ -71,6 +75,38 @@ export default function UserIdIndex() {
       },
     );
     reset();
+  }
+
+  function handleLikeClick(tweetId: string) {
+    if (!session) {
+      alert("ログインしてください。");
+      return;
+    }
+
+    if (tweetLikeLikeOrUnlikeMutation.isPending) return;
+
+    tweetLikeLikeOrUnlikeMutation.mutate(
+      { tweetId },
+      {
+        onSuccess(data) {
+          utils.tweet.getAllByUserId.setData({ userId }, (old) => {
+            return produce(old, (draft) => {
+              const tweet = draft?.find((t) => t.id === tweetId);
+              if (!tweet) return draft;
+
+              const likeIndex = tweet.likes.findIndex(
+                (like) => like.userId === data.userId,
+              );
+              if (likeIndex === -1) {
+                tweet.likes.push(data);
+              } else {
+                tweet.likes.splice(likeIndex, 1);
+              }
+            });
+          });
+        },
+      },
+    );
   }
 
   return (
@@ -111,7 +147,12 @@ export default function UserIdIndex() {
       </div>
       <div>
         <h2 className="mb-2 font-bold">ツイート</h2>
-        <TweetList tweets={tweets} isLoading={isLoadingTweet} />
+        <TweetList
+          tweets={tweets}
+          isLoading={isLoadingTweet}
+          handleLikeClick={handleLikeClick}
+          currentUserId={session?.user.id}
+        />
       </div>
     </DefaultLayout>
   );
