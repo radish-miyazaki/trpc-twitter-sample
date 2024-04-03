@@ -62,6 +62,11 @@ function AuthShowcase() {
       >
         {sessionData ? "Sign out" : "Sign in"}
       </button>
+      {sessionData && (
+        <Link className="text-white" href={`/${sessionData.user?.id}`}>
+          マイページ
+        </Link>
+      )}
     </div>
   );
 }
