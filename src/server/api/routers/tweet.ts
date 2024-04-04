@@ -82,4 +82,33 @@ export const tweetRouter = createTRPCRouter({
         nextCursor,
       };
     }),
+  getByFollowing: protectedProcedure.query(async ({ ctx }) => {
+    const user = await ctx.db.user.findUnique({
+      where: { id: ctx.session.user.id },
+      include: {
+        following: true,
+      },
+    });
+
+    return ctx.db.tweet.findMany({
+      where: {
+        userId: {
+          in: user?.following.map((f) => f.targetId),
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        from: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+        likes: true,
+      },
+    });
+  }),
 });

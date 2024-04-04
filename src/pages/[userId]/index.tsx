@@ -13,6 +13,7 @@ import { DefaultLayout } from "~/components/DefaultLayout";
 import Error from "next/error";
 import { UserIcon } from "~/components/UserIcon";
 import { TweetList } from "~/components/TweetList";
+import Link from "next/link";
 
 export default function UserIdIndex() {
   const router = useRouter();
@@ -46,6 +47,8 @@ export default function UserIdIndex() {
   const tweetAddMutation = api.tweet.add.useMutation();
   const tweetLikeLikeOrUnlikeMutation =
     api.tweetLike.likeOrUnLike.useMutation();
+  const userFollowFollowOrUnfollowMutation =
+    api.userFollow.followOrUnfollow.useMutation();
 
   if (isLoadingUser) {
     return (
@@ -108,6 +111,32 @@ export default function UserIdIndex() {
     );
   }
 
+  function handleFollow() {
+    if (userFollowFollowOrUnfollowMutation.isPending) return;
+
+    userFollowFollowOrUnfollowMutation.mutate(
+      { targetId: userId },
+      {
+        onSuccess(data) {
+          utils.user.getByUserId.setData({ userId }, (old) => {
+            const followIndex =
+              old?.followers.findIndex((f) => f.userId === session?.user.id) ??
+              -1;
+            if (followIndex === -1) {
+              return produce(old, (draft) => {
+                draft?.followers.push(data);
+              });
+            }
+
+            return produce(old, (draft) => {
+              draft?.followers.splice(followIndex, 1);
+            });
+          });
+        },
+      },
+    );
+  }
+
   return (
     <DefaultLayout session={session}>
       <div className="flex flex-col gap-2">
@@ -115,10 +144,31 @@ export default function UserIdIndex() {
           <div className="h-24 w-24">
             <UserIcon {...user} />
           </div>
+          {session && userId !== session.user.id && (
+            <button
+              className="rounded-full bg-gray-700 px-4 py-2 text-white hover:bg-gray-600 disabled:bg-gray-200"
+              onClick={handleFollow}
+              disabled={userFollowFollowOrUnfollowMutation.isPending}
+            >
+              {!user.followers.find((f) => f.userId === session.user.id)
+                ? "フォロー"
+                : "フォロー解除"}
+            </button>
+          )}
         </div>
         <div className="flex flex-col">
           <h1 className="text-2xl font-bold">{user?.name ?? "no name"}</h1>
           <p className="text-slate-700">@{user?.id ?? "---"}</p>
+          <div className="mt-3 flex gap-3 text-sm">
+            <Link href={`/${userId}/following`}>
+              <span className="font-bold">{user.following.length}</span>{" "}
+              フォロー
+            </Link>
+            <Link href={`/${userId}/followers`}>
+              <span className="font-bold">{user.followers.length}</span>{" "}
+              フォロワー
+            </Link>
+          </div>
         </div>
       </div>
       <div className="my-4">
